@@ -1,13 +1,13 @@
 import type { SiteConfig } from "@/features/config/site-config.schema";
 
 export const blogConfig = {
-  title: "站点名称",
-  author: "作者",
+  title: "Nain's Blog",
+  author: "Nain",
   description:
-    "这是我的个人网站和博客。在这里，我主要分享与技术和生活相关的内容。欢迎阅读！",
+    "Nain 的个人博客。在这里，我主要分享与技术和生活相关的内容。欢迎阅读！",
   social: [
-    { platform: "github", url: "https://github.com/example" },
-    { platform: "email", url: "mailto:example@email.com" },
+    { platform: "github", url: "https://github.com/Muluk-m" },
+    { platform: "email", url: "mailto:maqiqian0316@gmail.com" },
     { platform: "rss", url: "/rss.xml" },
   ],
   icons: {
@@ -20,7 +20,7 @@ export const blogConfig = {
   },
   theme: {
     default: {
-      navBarName: "导航栏名称",
+      navBarName: "Nain's Blog",
     },
     fuwari: {
       homeBg: "/images/home-bg.webp",
