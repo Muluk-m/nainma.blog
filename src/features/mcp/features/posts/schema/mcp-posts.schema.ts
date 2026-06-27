@@ -93,6 +93,11 @@ export const McpPostUpdateInputSchema = z
       .describe(
         "Full post body as markdown. Converted to editor JSON internally.",
       ),
+    coverImageKey: z
+      .string()
+      .nullable()
+      .optional()
+      .describe("R2 media key for the cover image, or null to remove it."),
   })
   .refine(
     (value) =>
@@ -102,7 +107,8 @@ export const McpPostUpdateInputSchema = z
       value.status !== undefined ||
       value.publishedAt !== undefined ||
       value.readTimeInMinutes !== undefined ||
-      value.contentMarkdown !== undefined,
+      value.contentMarkdown !== undefined ||
+      value.coverImageKey !== undefined,
     {
       message: "At least one field must be provided.",
     },

@@ -41,10 +41,55 @@ export const MermaidDiagram = memo(function MermaidDiagram({
         const mermaid = (await import(/* @vite-ignore */ mermaidCdnUrl))
           .default;
         const isDark = document.documentElement.classList.contains("dark");
+        // 默认 dark/default 主题配色糙、间距挤；改用 base 主题自定义成
+        // 博客 zinc 极简调性：细边框 + 克制连线 + 舒展间距 + 无衬线字体
+        const palette = isDark
+          ? {
+              nodeBkg: "#18181b",
+              border: "#52525b",
+              text: "#e4e4e7",
+              line: "#71717a",
+              clusterBkg: "rgba(255,255,255,0.02)",
+              clusterBorder: "#3f3f46",
+              edgeLabelBg: "#1c1c1f",
+            }
+          : {
+              nodeBkg: "#ffffff",
+              border: "#d4d4d8",
+              text: "#27272a",
+              line: "#a1a1aa",
+              clusterBkg: "#f4f4f5",
+              clusterBorder: "#e4e4e7",
+              edgeLabelBg: "#ffffff",
+            };
         mermaid.initialize({
           startOnLoad: false,
           securityLevel: "strict",
-          theme: isDark ? "dark" : "default",
+          theme: "base",
+          fontFamily:
+            'ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif',
+          themeVariables: {
+            background: "transparent",
+            primaryColor: palette.nodeBkg,
+            mainBkg: palette.nodeBkg,
+            primaryBorderColor: palette.border,
+            nodeBorder: palette.border,
+            primaryTextColor: palette.text,
+            textColor: palette.text,
+            lineColor: palette.line,
+            clusterBkg: palette.clusterBkg,
+            clusterBorder: palette.clusterBorder,
+            edgeLabelBackground: palette.edgeLabelBg,
+            fontSize: "14px",
+          },
+          flowchart: {
+            curve: "basis",
+            nodeSpacing: 48,
+            rankSpacing: 56,
+            padding: 14,
+            htmlLabels: true,
+            useMaxWidth: true,
+          },
         });
         const { svg } = await mermaid.render(renderId, source);
         if (!cancelled) setState({ status: "done", svg });

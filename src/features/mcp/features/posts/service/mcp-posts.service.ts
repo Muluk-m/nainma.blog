@@ -84,6 +84,7 @@ type McpPostUpdateInput = {
   publishedAt?: string | null;
   readTimeInMinutes?: number;
   contentMarkdown?: string;
+  coverImageKey?: string | null;
 };
 
 function normalizeMcpMarkdownInput(markdown: string) {
@@ -141,6 +142,10 @@ export async function toPostUpdateInput(
     data.contentJson = await markdownToJsonContent(
       normalizeMcpMarkdownInput(input.contentMarkdown),
     );
+  }
+
+  if (input.coverImageKey !== undefined) {
+    data.coverImageKey = input.coverImageKey;
   }
 
   return {
