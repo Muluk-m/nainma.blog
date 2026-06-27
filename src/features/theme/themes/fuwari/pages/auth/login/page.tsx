@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Github, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { GithubIcon } from "@/components/common/brand-icon";
 import type { LoginPageProps } from "@/features/theme/contract/pages";
 import { m } from "@/paraglide/messages";
 
@@ -18,15 +19,11 @@ export function LoginPage({
     turnstilePending: formTurnstilePending,
   } = loginForm;
 
-  const {
-    isLoading: socialIsLoading,
-    turnstilePending: socialTurnstilePending,
-    handleGithubLogin,
-  } = socialLogin;
+  const { isLoading: socialIsLoading, handleGithubLogin } = socialLogin;
 
   const isFormDisabled =
     isSubmitting || loginStep !== "IDLE" || formTurnstilePending;
-  const isSocialDisabled = socialIsLoading || socialTurnstilePending;
+  const isSocialDisabled = socialIsLoading;
 
   return (
     <div className="flex flex-col gap-8">
@@ -132,18 +129,16 @@ export function LoginPage({
             !isEmailConfigured ? "fuwari-btn-primary" : "fuwari-btn-regular"
           }`}
         >
-          {socialIsLoading || socialTurnstilePending ? (
+          {socialIsLoading ? (
             <Loader2 size={16} className="animate-spin opacity-70" />
           ) : (
-            <Github size={16} />
+            <GithubIcon size={16} />
           )}
 
           <span className="tracking-wide">
             {socialIsLoading
               ? m.login_social_connecting()
-              : socialTurnstilePending
-                ? m.login_social_verifying()
-                : m.login_github_fuwari()}
+              : m.login_github_fuwari()}
           </span>
         </button>
 

@@ -11,7 +11,7 @@ import searchRoute from "@/features/search/api/hono/search.route";
 import siteDocumentsRoute from "@/features/site-documents/api/hono/site-documents.route";
 import tagsRoute from "@/features/tags/api/hono/tags.list.route";
 import { serverEnv } from "@/lib/env/server.env";
-import { createRateLimiterIdentifier } from "./helper";
+import { createRateLimiterIdentifier, getExecutionContext } from "./helper";
 import {
   baseMiddleware,
   cacheMiddleware,
@@ -97,7 +97,6 @@ app.get("/api/auth/*", baseMiddleware, forwardAuthRequest);
 const protectedAuthPaths = [
   "/api/auth/sign-in/email",
   "/api/auth/sign-up/email",
-  "/api/auth/sign-in/social",
   "/api/auth/request-password-reset",
   "/api/auth/send-verification-email",
 ] as const;
@@ -142,7 +141,7 @@ app.all("*", (c) => {
   return handler.fetch(c.req.raw, {
     context: {
       env: c.env,
-      executionCtx: c.executionCtx,
+      executionCtx: getExecutionContext(c),
     },
   });
 });

@@ -1,4 +1,5 @@
-import { Github, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { GithubIcon } from "@/components/common/brand-icon";
 import type { SocialLoginData } from "@/features/theme/contract/pages";
 import { m } from "@/paraglide/messages";
 
@@ -8,7 +9,6 @@ interface SocialLoginProps extends SocialLoginData {
 
 export function SocialLogin({
   isLoading,
-  turnstilePending,
   handleGithubLogin,
   showDivider = true,
 }: SocialLoginProps) {
@@ -27,28 +27,24 @@ export function SocialLogin({
       <button
         type="button"
         onClick={handleGithubLogin}
-        disabled={isLoading || turnstilePending}
+        disabled={isLoading}
         className={`group w-full py-4 border border-border/40 flex items-center justify-center gap-3 transition-all hover:border-foreground disabled:opacity-50 disabled:cursor-not-allowed ${
           !showDivider
             ? "bg-foreground text-background border-transparent hover:opacity-80"
             : ""
         }`}
       >
-        {isLoading || turnstilePending ? (
+        {isLoading ? (
           <Loader2
             size={14}
             className={`${showDivider ? "text-muted-foreground" : "text-background"} animate-spin`}
           />
         ) : (
-          <Github size={14} strokeWidth={1.5} />
+          <GithubIcon size={14} strokeWidth={1.5} />
         )}
 
         <span className="text-[10px] font-mono uppercase tracking-widest">
-          {isLoading
-            ? m.login_social_connecting()
-            : turnstilePending
-              ? m.login_social_verifying()
-              : m.login_github()}
+          {isLoading ? m.login_social_connecting() : m.login_github()}
         </span>
       </button>
       {!showDivider && (
