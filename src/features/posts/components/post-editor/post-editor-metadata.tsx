@@ -6,6 +6,7 @@ import { TagSelector } from "@/features/tags/components/tag-selector";
 import { POST_STATUSES } from "@/lib/db/schema";
 import { toLocalDateString } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
+import { PostEditorCoverImage } from "./post-editor-cover-image";
 import type { PostEditorData } from "./types";
 
 const STATUS_LABELS: Record<PostEditorData["status"], () => string> = {
@@ -186,6 +187,11 @@ export function PostEditorMetadata({
             </button>
           </div>
         </div>
+
+        <PostEditorCoverImage
+          coverImageKey={post.coverImageKey}
+          onChange={(coverImageKey) => onPostChange({ coverImageKey })}
+        />
 
         <div className="col-span-1 space-y-3 md:col-span-3">
           <div className="flex items-center justify-between">

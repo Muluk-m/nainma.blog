@@ -76,6 +76,7 @@ export const PostFrontmatterSchema = z.object({
   updatedAt: z.string().optional().nullable(),
   readTimeInMinutes: z.number().default(1),
   tags: z.array(z.string()).default([]),
+  cover: z.string().optional().nullable(),
 });
 
 export type PostFrontmatter = z.infer<typeof PostFrontmatterSchema>;

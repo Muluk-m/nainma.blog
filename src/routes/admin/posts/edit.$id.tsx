@@ -66,6 +66,7 @@ function EditPost() {
     id: post.id,
     title: post.title,
     summary: post.summary ?? "",
+    coverImageKey: post.coverImageKey,
     slug: post.slug,
     status: post.status,
     readTimeInMinutes: post.readTimeInMinutes,

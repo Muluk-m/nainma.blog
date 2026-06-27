@@ -22,6 +22,8 @@ export const PostRevisionSnapshotSchema = z.object({
   readTimeInMinutes: z.number().int().min(1),
   contentJson: NullableJsonContentSchema,
   tagIds: z.array(z.number().int()),
+  // 旧 revision 的 snapshot 没有该字段，缺失时回退为 null
+  coverImageKey: z.string().nullable().default(null),
 });
 
 export const PostRevisionSelectSchema = createSelectSchema(PostRevisionsTable, {

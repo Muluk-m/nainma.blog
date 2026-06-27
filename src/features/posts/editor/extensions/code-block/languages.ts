@@ -26,6 +26,7 @@ export function getLanguages() {
     { value: "yaml", label: "YAML" },
     { value: "xml", label: "XML" },
     { value: "markdown", label: "Markdown" },
+    { value: "mermaid", label: "Mermaid" },
     { value: "dockerfile", label: "Dockerfile" },
     { value: "text", label: m.common_plain_text() },
   ];

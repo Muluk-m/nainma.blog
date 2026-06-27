@@ -91,6 +91,7 @@ export class ExportWorkflow extends WorkflowEntrypoint<
             updatedAt: post.updatedAt.toISOString(),
             readTimeInMinutes: post.readTimeInMinutes,
             tags: post.tags.map((t) => t.name),
+            cover: post.coverImageKey ?? undefined,
           };
 
           // Convert content to Markdown

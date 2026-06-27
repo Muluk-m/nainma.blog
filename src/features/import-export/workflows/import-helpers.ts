@@ -18,6 +18,7 @@ import {
 } from "@/features/import-export/utils/zip";
 import * as MediaRepo from "@/features/media/data/media.data";
 import {
+  extractImageKey,
   generateKey,
   getContentTypeFromKey,
 } from "@/features/media/utils/media.utils";
@@ -80,6 +81,24 @@ export function enumerateMarkdownPosts(
       return entry;
     })
     .filter((e): e is PostEntry => e !== null);
+}
+
+// --- Resolve cover image key from frontmatter ---
+
+/**
+ * 把 frontmatter 的 cover 解析为本站 R2 key。
+ * - /images/<key>?... → 提取 key
+ * - 裸 key（无协议、无路径分隔）→ 视为已是 R2 key
+ * - 外部 URL / 无法识别 → null（第一版不自动迁移外链封面）
+ */
+function resolveCoverImageKey(cover: string | null | undefined): string | null {
+  if (!cover) return null;
+  const extracted = extractImageKey(cover);
+  if (extracted) return extracted;
+  if (!/^https?:\/\//.test(cover) && !cover.includes("/")) {
+    return cover;
+  }
+  return null;
 }
 
 // --- Import single post (needs env for DB / R2) ---
@@ -235,6 +254,7 @@ export async function importSinglePost(
     title,
     slug,
     summary: normalized.summary ?? null,
+    coverImageKey: resolveCoverImageKey(normalized.cover),
     contentJson,
     status: normalized.status === "draft" ? "draft" : "published",
     readTimeInMinutes: normalized.readTimeInMinutes,

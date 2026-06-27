@@ -1,0 +1,1 @@
+ALTER TABLE `posts` ADD `cover_image_key` text;

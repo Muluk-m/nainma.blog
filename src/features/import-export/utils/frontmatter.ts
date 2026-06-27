@@ -92,6 +92,13 @@ export function normalizeFrontmatter(
     mapped.tags = tagsSource.filter((t): t is string => typeof t === "string");
   }
 
+  // cover — 兼容 cover / coverImage / image / thumbnail
+  const coverSource =
+    data.cover ?? data.coverImage ?? data.image ?? data.thumbnail;
+  if (typeof coverSource === "string") {
+    mapped.cover = coverSource;
+  }
+
   const result = PostFrontmatterSchema.safeParse(mapped);
   if (!result.success) {
     console.error(

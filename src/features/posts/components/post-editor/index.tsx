@@ -23,6 +23,7 @@ export function PostEditor({ initialData, onSave }: PostEditorProps) {
   const [post, setPost] = useState<PostEditorData>(() => ({
     title: initialData.title,
     summary: initialData.summary,
+    coverImageKey: initialData.coverImageKey ?? null,
     slug: initialData.slug,
     status: initialData.status,
     readTimeInMinutes: initialData.readTimeInMinutes,
@@ -114,6 +115,7 @@ export function PostEditor({ initialData, onSave }: PostEditorProps) {
       snapshot: {
         title: string;
         summary: string | null;
+        coverImageKey: string | null;
         slug: string;
         status: PostEditorData["status"];
         publishedAt: string | null;
@@ -126,6 +128,7 @@ export function PostEditor({ initialData, onSave }: PostEditorProps) {
       const restoredPost: PostEditorData = {
         title: snapshot.title,
         summary: snapshot.summary ?? "",
+        coverImageKey: snapshot.coverImageKey,
         slug: snapshot.slug,
         status: snapshot.status,
         readTimeInMinutes: snapshot.readTimeInMinutes,
@@ -150,6 +153,7 @@ export function PostEditor({ initialData, onSave }: PostEditorProps) {
     () => ({
       title: post.title,
       summary: post.summary.trim() || null,
+      coverImageKey: post.coverImageKey,
       slug: post.slug,
       status: post.status,
       publishedAt: post.publishedAt ? post.publishedAt.toISOString() : null,
@@ -159,6 +163,7 @@ export function PostEditor({ initialData, onSave }: PostEditorProps) {
     }),
     [
       post.contentJson,
+      post.coverImageKey,
       post.publishedAt,
       post.readTimeInMinutes,
       post.slug,

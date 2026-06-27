@@ -35,6 +35,7 @@ function toRevisionSnapshot(
     readTimeInMinutes: post.readTimeInMinutes,
     contentJson: post.contentJson,
     tagIds: [...new Set(post.tags.map((tag) => tag.id))].sort((a, b) => a - b),
+    coverImageKey: post.coverImageKey,
   };
 }
 
@@ -47,6 +48,7 @@ async function hashSnapshot(snapshot: PostRevisionSnapshot) {
     slug: snapshot.slug,
     publishedAt: snapshot.publishedAt,
     readTimeInMinutes: snapshot.readTimeInMinutes,
+    coverImageKey: snapshot.coverImageKey,
   });
 }
 

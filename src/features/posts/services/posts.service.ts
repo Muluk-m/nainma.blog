@@ -321,6 +321,7 @@ export async function findPostById(
       publishedAt: post.publishedAt,
       pinnedAt: post.pinnedAt,
       readTimeInMinutes: post.readTimeInMinutes,
+      coverImageKey: post.coverImageKey,
     });
     isSynced = dbHash === kvHash;
   }
@@ -419,6 +420,7 @@ export async function startPostProcessWorkflow(
         publishedAt: post.publishedAt,
         pinnedAt: post.pinnedAt,
         readTimeInMinutes: post.readTimeInMinutes,
+        coverImageKey: post.coverImageKey,
       });
 
       await PostRevisionRepo.insertPostRevision(context.db, {
@@ -436,6 +438,7 @@ export async function startPostProcessWorkflow(
           tagIds: [...new Set(post.tags.map((tag) => tag.id))].sort(
             (a, b) => a - b,
           ),
+          coverImageKey: post.coverImageKey,
         },
       });
 

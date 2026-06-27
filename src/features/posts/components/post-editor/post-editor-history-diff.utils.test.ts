@@ -58,6 +58,7 @@ describe("buildRevisionFieldDiffs", () => {
         readTimeInMinutes: 3,
         contentJson: null,
         tagIds: [1],
+        coverImageKey: null,
       },
       {
         title: "New title",
@@ -68,6 +69,7 @@ describe("buildRevisionFieldDiffs", () => {
         readTimeInMinutes: 5,
         contentJson: null,
         tagIds: [2],
+        coverImageKey: null,
       },
       [
         { id: 1, name: "old" },

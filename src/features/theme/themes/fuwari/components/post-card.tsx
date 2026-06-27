@@ -9,6 +9,7 @@ import {
   Tag,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getOptimizedImageUrl } from "@/features/media/utils/media.utils";
 import type { PostItem } from "@/features/posts/schema/posts.schema";
 import { formatDate } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
@@ -41,6 +42,20 @@ export function PostCard({
       )}
 
       <div className="pl-6 md:pl-9 pr-6 pt-6 md:pt-7 pb-6 relative w-full md:pr-24">
+        {post.coverImageKey && (
+          <Link
+            to="/post/$slug"
+            params={{ slug: post.slug }}
+            className="mb-5 block overflow-hidden rounded-(--fuwari-radius-large)"
+          >
+            <img
+              src={getOptimizedImageUrl(post.coverImageKey, 1000)}
+              alt={post.title}
+              loading="lazy"
+              className="aspect-[2/1] w-full object-cover transition-transform duration-500 hover:scale-[1.02]"
+            />
+          </Link>
+        )}
         {/* Badge */}
         {(pinned || popular) && (
           <div className="flex items-center gap-1.5 font-medium text-sm mb-3">

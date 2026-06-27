@@ -1,6 +1,7 @@
 import type { JSONContent } from "@tiptap/react";
 import { renderToReactElement } from "@tiptap/static-renderer/pm/react";
 import { MathFormula } from "@/components/content/math-formula";
+import { MermaidDiagram } from "@/components/content/mermaid-diagram";
 import { extensions } from "@/features/posts/editor/config";
 import { CodeBlock } from "@/features/theme/themes/default/components/content/code-block";
 import { ImageDisplay } from "@/features/theme/themes/default/components/content/image-display";
@@ -47,6 +48,10 @@ export function renderReact(content: JSONContent) {
             language?: string | null;
             highlightedHtml?: string;
           };
+
+          if (attrs.language?.toLowerCase() === "mermaid") {
+            return <MermaidDiagram code={code} />;
+          }
 
           return (
             <CodeBlock

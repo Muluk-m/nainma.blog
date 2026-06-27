@@ -51,19 +51,23 @@ export async function highlightCodeBlocks(
 
   async function traverse(node: JSONContent) {
     if (node.type === "codeBlock") {
-      const code = node.content?.map((n) => n.text || "").join("") || "";
       const lang = node.attrs?.language || "text";
-      try {
-        const html = await highlight(code.trim(), lang);
-        node.attrs = { ...node.attrs, highlightedHtml: html };
-      } catch (e) {
-        console.warn(
-          JSON.stringify({
-            event: "code_highlight_failed",
-            lang,
-            error: e instanceof Error ? e.message : String(e),
-          }),
-        );
+      // mermaid 代码块在客户端渲染成图表（依赖浏览器 DOM），
+      // 服务端跳过 shiki 高亮，保留原始代码交给前端 MermaidDiagram。
+      if (lang !== "mermaid") {
+        const code = node.content?.map((n) => n.text || "").join("") || "";
+        try {
+          const html = await highlight(code.trim(), lang);
+          node.attrs = { ...node.attrs, highlightedHtml: html };
+        } catch (e) {
+          console.warn(
+            JSON.stringify({
+              event: "code_highlight_failed",
+              lang,
+              error: e instanceof Error ? e.message : String(e),
+            }),
+          );
+        }
       }
     }
     if (node.content) {

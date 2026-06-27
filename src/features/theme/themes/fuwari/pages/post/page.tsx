@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Clock, FileText, Pencil } from "lucide-react";
 import { Suspense } from "react";
+import { getOptimizedImageUrl } from "@/features/media/utils/media.utils";
 import type { PostPageProps } from "@/features/theme/contract/pages";
 import { FuwariCommentSection } from "@/features/theme/themes/fuwari/components/comments/view/comment-section";
 import { ContentRenderer } from "@/features/theme/themes/fuwari/components/content/content-renderer";
@@ -31,6 +32,15 @@ export function PostPage({ post }: PostPageProps) {
 
       {/* Main Post Container */}
       <div className="fuwari-card-base z-10 px-6 md:px-9 pt-6 pb-4 relative w-full fuwari-onload-animation">
+        {post.coverImageKey && (
+          <div className="mb-5 overflow-hidden rounded-(--fuwari-radius-large)">
+            <img
+              src={getOptimizedImageUrl(post.coverImageKey, 1600)}
+              alt={post.title}
+              className="aspect-[16/9] w-full object-cover"
+            />
+          </div>
+        )}
         {/* Word count and reading time */}
         <div className="flex flex-row flex-wrap fuwari-text-30 gap-5 mb-3 transition">
           <div className="flex flex-row items-center">

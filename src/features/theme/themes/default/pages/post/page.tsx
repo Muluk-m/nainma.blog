@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowUp, Pencil, Share2, Sparkles } from "lucide-react";
 import { Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { getOptimizedImageUrl } from "@/features/media/utils/media.utils";
 import type { PostPageProps } from "@/features/theme/contract/pages";
 import { ContentRenderer } from "@/features/theme/themes/default/components/content/content-renderer";
 import { authClient } from "@/lib/auth/auth.client";
@@ -51,6 +52,15 @@ export function PostPage({ post }: PostPageProps) {
       <article className="space-y-16">
         {/* Header Section */}
         <header className="space-y-8">
+          {post.coverImageKey && (
+            <div className="overflow-hidden rounded-lg border border-border/40">
+              <img
+                src={getOptimizedImageUrl(post.coverImageKey, 1600)}
+                alt={post.title}
+                className="aspect-[16/9] w-full object-cover"
+              />
+            </div>
+          )}
           <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-muted-foreground/60 tracking-wider">
               <span className="flex items-center gap-1.5">

@@ -813,6 +813,7 @@ describe("Posts Integration", () => {
           ],
         },
         tagIds: [tag.id],
+        coverImageKey: null,
       });
     });
 
@@ -1151,6 +1152,7 @@ describe("Posts Integration", () => {
           ],
         },
         tagIds: [tag.id],
+        coverImageKey: null,
       });
     });
 

@@ -2,6 +2,7 @@ import { ClientOnly, Link } from "@tanstack/react-router";
 import { Eye, Pin } from "lucide-react";
 import { memo } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getOptimizedImageUrl } from "@/features/media/utils/media.utils";
 import type { PostItem as PostItemType } from "@/features/posts/schema/posts.schema";
 import { formatDate } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
@@ -23,6 +24,16 @@ export const PostItem = memo(
           className="block py-8 md:py-10 transition-all duration-300 hover:pl-4"
         >
           <div className="flex flex-col gap-3">
+            {post.coverImageKey && (
+              <div className="mb-2 overflow-hidden rounded-md border border-border/30">
+                <img
+                  src={getOptimizedImageUrl(post.coverImageKey, 800)}
+                  alt={post.title}
+                  loading="lazy"
+                  className="aspect-video w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+              </div>
+            )}
             {/* Metadata Row */}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-mono text-muted-foreground/60 tracking-wider">
               <time
