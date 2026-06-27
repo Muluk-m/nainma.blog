@@ -21,6 +21,18 @@ token auto-refreshes after that.
 Paths below are relative to the repo root. The driver lives at
 `.claude/skills/run-nainma-blog/driver.mjs`.
 
+## 写作风格（写正文时务必遵守）
+
+博主要求：博客正文不要带「AI 生成感」的套路句式。写或改正文时**避免**以下中文写作痕迹（这是博主明确反馈的，不是建议）：
+
+- **「不是…而是…」/「不只是…而是…」/「并非…而是…」** 这类对比排比句式 → 改成直述。
+  - ✗ 「它不是又一层封装，而是把它重新建模了一次。」
+  - ✓ 「换句话说，它把这件事重新建模了一次。」
+- **「硬骨头」「绕不开的那个 X」** 这类拔高/煽情的比喻词 → 用平实表达。
+- 更广义地，避免常见的 AI 行文 tells：三段排比（rule of three）凑数、空泛升华、「值得一提的是」「不仅…更…」、过度使用破折号制造转折。
+
+写完后自查一遍：`grep -nE '不是.{0,20}而是|不只是.{0,20}而是|并非.{0,15}而是|硬骨头' <file.md>` 应无命中。需要去 AI 味时可配合 `humanizer` skill。
+
 ## Prerequisites
 
 - Node 18+ (has global `fetch`/`crypto`) or `bun`. No `npm install` — the driver
@@ -98,6 +110,16 @@ node .claude/skills/run-nainma-blog/driver.mjs list                 # 20 most-re
 node .claude/skills/run-nainma-blog/driver.mjs list --status draft  # only drafts
 node .claude/skills/run-nainma-blog/driver.mjs get 3                # full post incl. markdown body
 node .claude/skills/run-nainma-blog/driver.mjs delete 5            # delete by id
+```
+
+Edit an existing post **in place** (no new post created — use this to fix a
+published post instead of delete + re-publish):
+
+```bash
+# metadata: keys are title | slug | summary | status
+node .claude/skills/run-nainma-blog/driver.mjs set 6 "title=New Title" summary="新摘要"
+# replace the markdown body from a file:
+node .claude/skills/run-nainma-blog/driver.mjs set-body 6 /tmp/revised.md
 ```
 
 ## Smoke test (verify the whole pipeline)

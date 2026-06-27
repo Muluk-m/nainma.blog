@@ -416,6 +416,30 @@ async function main() {
       console.log(`✓ deleted #${r.id} (${r.slug})`);
       break;
     }
+    case "set": {
+      // In-place update of an existing post: set <id> key=value ...
+      // keys: title | slug | summary | status (draft|published)
+      const id = Number(rest[0]);
+      if (!id) throw new Error('usage: set <id> title="..." [slug=...] [summary=...]');
+      const update = { id };
+      for (const kv of rest.slice(1)) {
+        const eq = kv.indexOf("=");
+        if (eq < 0) throw new Error(`bad field "${kv}" — expected key=value`);
+        update[kv.slice(0, eq)] = kv.slice(eq + 1);
+      }
+      const p = await callTool("posts_update", update);
+      console.log(`✓ updated #${p.id}: ${p.title}`);
+      break;
+    }
+    case "set-body": {
+      // Replace a post's markdown body in place: set-body <id> <file.md>
+      const id = Number(rest[0]);
+      if (!id || !rest[1]) throw new Error("usage: set-body <id> <file.md>");
+      const { body } = parseMarkdown(resolve(rest[1]));
+      const p = await callTool("posts_update", { id, contentMarkdown: body });
+      console.log(`✓ updated body of #${p.id}: ${p.title}`);
+      break;
+    }
     case "smoke": {
       const stamp = rest[0] || String(Date.now());
       const id = await callTool("posts_create_draft", {}).then((d) => d.id);
