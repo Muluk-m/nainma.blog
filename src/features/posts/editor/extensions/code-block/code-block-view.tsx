@@ -1,7 +1,8 @@
 import type { NodeViewProps } from "@tiptap/react";
 import { NodeViewContent, NodeViewWrapper } from "@tiptap/react";
-import { Check, Copy } from "lucide-react";
+import { Check, Code2, Copy, Eye } from "lucide-react";
 import { useEffect, useState } from "react";
+import { MermaidDiagram } from "@/components/content/mermaid-diagram";
 import DropdownMenu from "@/components/ui/dropdown-menu";
 import {
   getHighlighter,
@@ -17,8 +18,10 @@ export function CodeBlockView({
   editor,
 }: NodeViewProps) {
   const [copied, setCopied] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
   const [themeStyles, setThemeStyles] = useState<React.CSSProperties>({});
   const language = node.attrs.language || "text";
+  const isMermaid = language === "mermaid";
   const languages = getLanguages();
 
   useEffect(() => {
@@ -78,20 +81,36 @@ export function CodeBlockView({
             </span>
           </div>
 
-          <button
-            onClick={handleCopy}
-            contentEditable={false}
-            className="flex items-center gap-2 text-xs font-mono text-muted-foreground hover:text-foreground transition-all duration-300"
-          >
-            {copied ? (
-              <span className="animate-in fade-in slide-in-from-right-1 opacity-70">
-                {m.common_copied()}
-              </span>
-            ) : null}
-            <div className="p-0.5 opacity-60 group-hover/btn:opacity-100 transition-opacity">
-              {copied ? <Check size={12} /> : <Copy size={12} />}
-            </div>
-          </button>
+          <div className="flex items-center gap-3">
+            {isMermaid && (
+              <button
+                onClick={() => setShowPreview((p) => !p)}
+                contentEditable={false}
+                className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors duration-300"
+              >
+                {showPreview ? <Code2 size={12} /> : <Eye size={12} />}
+                <span>
+                  {showPreview
+                    ? m.editor_code_block_code()
+                    : m.editor_code_block_preview()}
+                </span>
+              </button>
+            )}
+            <button
+              onClick={handleCopy}
+              contentEditable={false}
+              className="flex items-center gap-2 text-xs font-mono text-muted-foreground hover:text-foreground transition-all duration-300"
+            >
+              {copied ? (
+                <span className="animate-in fade-in slide-in-from-right-1 opacity-70">
+                  {m.common_copied()}
+                </span>
+              ) : null}
+              <div className="p-0.5 opacity-60 group-hover/btn:opacity-100 transition-opacity">
+                {copied ? <Check size={12} /> : <Copy size={12} />}
+              </div>
+            </button>
+          </div>
         </div>
 
         {/* Code Area */}
@@ -99,9 +118,16 @@ export function CodeBlockView({
           className="shiki relative overflow-x-auto custom-scrollbar rounded-b-sm"
           style={themeStyles}
         >
+          {isMermaid && showPreview && (
+            <div contentEditable={false} className="flex justify-center px-4">
+              <MermaidDiagram code={node.textContent} />
+            </div>
+          )}
           <NodeViewContent
             as="div"
-            className="p-6 font-mono text-sm leading-relaxed outline-none min-w-full w-fit"
+            className={`p-6 font-mono text-sm leading-relaxed outline-none min-w-full w-fit ${
+              isMermaid && showPreview ? "hidden" : ""
+            }`}
             spellCheck={false}
           />
         </div>

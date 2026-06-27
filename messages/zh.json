@@ -630,6 +630,8 @@
   "editor_meta_cover_upload": "上传封面",
   "editor_meta_cover_replace": "替换封面",
   "editor_meta_cover_remove": "移除",
+  "editor_code_block_preview": "预览",
+  "editor_code_block_code": "代码",
   "editor_meta_pin": "置顶文章",
   "editor_meta_pinned": "已置顶",
   "editor_meta_unpinned": "未置顶",
