@@ -34,7 +34,12 @@ export const MermaidDiagram = memo(function MermaidDiagram({
         return;
       }
       try {
-        const mermaid = (await import("mermaid")).default;
+        // mermaid 体积约 3MB，打进 Worker 会超 Cloudflare 免费版 3 MiB 限制，
+        // 改为浏览器运行时从 CDN 以 ESM 动态加载（变量 URL + @vite-ignore，构建不打包它）。
+        const mermaidCdnUrl =
+          "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+        const mermaid = (await import(/* @vite-ignore */ mermaidCdnUrl))
+          .default;
         const isDark = document.documentElement.classList.contains("dark");
         mermaid.initialize({
           startOnLoad: false,
