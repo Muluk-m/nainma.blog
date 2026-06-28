@@ -1,14 +1,5 @@
 import { ClientOnly, Link } from "@tanstack/react-router";
-import {
-  Calendar,
-  ChevronRight,
-  Clock,
-  Eye,
-  Flame,
-  Pin,
-  Tag,
-} from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Pin } from "lucide-react";
 import { getOptimizedImageUrl } from "@/features/media/utils/media.utils";
 import type { PostItem } from "@/features/posts/schema/posts.schema";
 import { formatDate } from "@/lib/utils";
@@ -16,171 +7,60 @@ import { m } from "@/paraglide/messages";
 
 interface PostCardProps {
   post: PostItem;
+  index?: number;
   pinned?: boolean;
-  popular?: boolean;
-  views?: number;
-  isLoadingViews?: boolean;
 }
 
-export function PostCard({
-  post,
-  pinned,
-  popular,
-  views,
-  isLoadingViews,
-}: PostCardProps) {
+export function PostCard({ post, index, pinned }: PostCardProps) {
   const tagNames = (post.tags ?? []).map((t) => t.name);
 
   return (
-    <div
-      className={`fuwari-card-base flex flex-col md:flex-row w-full rounded-(--fuwari-radius-large) overflow-hidden relative ${
-        pinned ? "border-2 border-(--fuwari-primary)/20 shadow-sm" : ""
-      }`}
+    <Link
+      to="/post/$slug"
+      params={{ slug: post.slug }}
+      className="group grid grid-cols-[1.75rem_1fr] md:grid-cols-[2rem_1fr] gap-4 md:gap-5 py-8 border-t border-black/8 dark:border-white/10 first:border-t-0"
     >
-      {pinned && (
-        <div className="absolute top-0 right-0 w-32 h-32 bg-(--fuwari-primary) opacity-5 rounded-bl-[100px] -z-10 pointer-events-none" />
-      )}
+      <span className="pt-1.5 text-right font-mono text-xs fuwari-text-30 tabular-nums transition-colors group-hover:fuwari-text-50">
+        {index !== undefined ? String(index + 1).padStart(2, "0") : ""}
+      </span>
 
-      {post.coverImageKey && (
-        <Link
-          to="/post/$slug"
-          params={{ slug: post.slug }}
-          className="block overflow-hidden md:w-60 md:shrink-0 md:self-stretch lg:w-64"
-        >
+      <div className="min-w-0 flex items-start gap-4">
+        {post.coverImageKey && (
           <img
-            src={getOptimizedImageUrl(post.coverImageKey, 640)}
-            alt={post.title}
+            src={getOptimizedImageUrl(post.coverImageKey, 200)}
+            alt=""
             loading="lazy"
-            className="aspect-[2/1] w-full object-cover transition-transform duration-500 hover:scale-[1.02] md:aspect-auto md:h-full"
+            className="mt-1 hidden sm:block w-12 h-12 shrink-0 rounded-lg object-cover border border-black/8 dark:border-white/10 [filter:grayscale(.5)_brightness(.99)] transition-[filter] duration-500 group-hover:[filter:grayscale(.15)]"
           />
-        </Link>
-      )}
-      <div className="relative flex-1 min-w-0 pl-6 md:pl-9 pr-6 pt-6 md:pt-7 pb-6 md:pr-24">
-        {/* Badge */}
-        {(pinned || popular) && (
-          <div className="flex items-center gap-1.5 font-medium text-sm mb-3">
-            {pinned ? (
-              <>
-                <Pin
-                  size={16}
-                  className="fill-current text-(--fuwari-primary)"
-                />
-                <span className="text-(--fuwari-primary)">
-                  {m.home_pinned_posts()}
-                </span>
-              </>
-            ) : (
-              <>
-                <Flame size={16} className="text-orange-500" />
-                <span className="text-orange-500">
-                  {m.home_popular_posts()}
-                </span>
-              </>
-            )}
-          </div>
         )}
 
-        <Link
-          to="/post/$slug"
-          params={{ slug: post.slug }}
-          className="transition group w-full block font-bold mb-3 text-3xl fuwari-text-90 hover:text-(--fuwari-primary) active:text-(--fuwari-primary) relative before:w-1 before:h-5 before:rounded-md before:absolute before:-left-5 before:top-1/2 before:-translate-y-1/2 before:hidden md:before:block before:bg-(--fuwari-primary)"
-        >
-          {post.title}
-          {
-            <>
-              <ChevronRight className="inline-block md:hidden text-[2rem] text-(--fuwari-primary) align-middle -mt-1 ml-1" />
-              <ChevronRight className="text-(--fuwari-primary) text-[2rem] transition hidden md:inline absolute translate-y-0.5 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0" />
-            </>
-          }
-        </Link>
-
-        {/* Metadata */}
-        <div className="flex flex-wrap fuwari-text-50 items-center gap-4 gap-x-4 gap-y-2 mb-4">
-          <div className="flex items-center">
-            <div className="fuwari-meta-icon">
-              <Calendar size={20} strokeWidth={1.5} />
-            </div>
-            <time
-              dateTime={post.publishedAt?.toISOString()}
-              className="text-sm font-medium"
-            >
-              <ClientOnly fallback="-">
-                {formatDate(post.publishedAt)}
-              </ClientOnly>
-            </time>
-          </div>
-          {tagNames.length > 0 && (
-            <div className="flex items-center">
-              <div className="fuwari-meta-icon">
-                <Tag size={20} strokeWidth={1.5} />
-              </div>
-              <div className="flex flex-row flex-wrap items-center gap-x-1.5">
-                {tagNames.map((name, i) => (
-                  <span key={name} className="flex items-center">
-                    {i > 0 && (
-                      <span className="mx-1.5 text-(--fuwari-meta-divider) text-sm">
-                        /
-                      </span>
-                    )}
-                    <Link
-                      to="/posts"
-                      search={{ tagName: name }}
-                      className="fuwari-expand-animation rounded-md px-1.5 py-1 -m-1.5 text-sm font-medium hover:text-(--fuwari-primary)"
-                    >
-                      {name}
-                    </Link>
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Description */}
-        <div
-          className={`fuwari-text-75 pr-4 wrap-break-word ${
-            pinned
-              ? "mb-4 line-clamp-3 md:line-clamp-2 text-lg leading-relaxed"
-              : "mb-3.5 line-clamp-2 md:line-clamp-1"
-          }`}
-        >
-          {post.summary ?? ""}
-        </div>
-
-        {/* Read time and Views */}
-        <div className="text-sm fuwari-text-50 flex items-center gap-4 [&_svg]:shrink-0">
-          <span className="inline-flex items-center gap-1.5">
-            <Clock size={14} />
-            {m.read_time({ count: post.readTimeInMinutes })}
-          </span>
-          {isLoadingViews ? (
-            <span className="inline-flex items-center gap-1.5">
-              <Eye size={15} />
-              <Skeleton className="h-3.5 w-8 rounded bg-black/10 dark:bg-white/10" />
+        <div className="min-w-0 flex-1">
+          <h2 className="text-[1.5rem]/snug fuwari-text-90 font-medium">
+            {pinned && (
+              <Pin
+                size={14}
+                className="inline align-baseline mr-1.5 -translate-y-px fuwari-text-30 fill-current"
+              />
+            )}
+            <span className="underline-offset-4 decoration-1 decoration-black/20 dark:decoration-white/25 group-hover:underline">
+              {post.title}
             </span>
-          ) : (
-            views !== undefined && (
-              <span className="inline-flex items-center gap-1.5">
-                <Eye size={15} />
-                {views.toLocaleString()}
-              </span>
-            )
-          )}
+          </h2>
+
+          <p className="mt-2 text-sm/relaxed fuwari-text-50 line-clamp-2">
+            {post.summary}
+          </p>
+
+          <div className="mt-3.5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1.5 font-mono text-[11.5px] fuwari-text-30">
+            <span className="min-w-0 truncate">{tagNames.join(" · ")}</span>
+            <span className="shrink-0 tabular-nums whitespace-nowrap">
+              <ClientOnly fallback="">{formatDate(post.publishedAt)}</ClientOnly>
+              {" · "}
+              {m.read_time({ count: post.readTimeInMinutes })}
+            </span>
+          </div>
         </div>
       </div>
-
-      {/* Enter button */}
-      <Link
-        to="/post/$slug"
-        params={{ slug: post.slug }}
-        aria-label={post.title}
-        className="hidden md:flex fuwari-btn-regular w-13 absolute right-3 top-3 bottom-3 rounded-xl active:scale-95"
-      >
-        <ChevronRight
-          className="text-(--fuwari-primary) text-4xl mx-auto"
-          strokeWidth={2}
-        />
-      </Link>
-    </div>
+    </Link>
   );
 }

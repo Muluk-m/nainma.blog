@@ -108,6 +108,7 @@
     "@cloudflare/vite-plugin": "^1.37.1",
     "@cloudflare/vitest-pool-workers": "^0.16.6",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@fontsource-variable/newsreader": "^5.2.10",
     "@fontsource-variable/noto-sans-sc": "^5.2.9",
     "@fontsource-variable/noto-serif-sc": "^5.2.10",
     "@inlang/paraglide-js": "^2.14.0",
