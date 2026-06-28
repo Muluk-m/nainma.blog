@@ -9,6 +9,7 @@ import { authClient } from "@/lib/auth/auth.client";
 import { m } from "@/paraglide/messages";
 import { PostMeta } from "./components/post-meta";
 import { PostSummary } from "./components/post-summary";
+import { ReadingProgress } from "./components/reading-progress";
 import { RelatedPosts, RelatedPostsSkeleton } from "./components/related-posts";
 import TableOfContents from "./components/table-of-contents";
 
@@ -18,14 +19,13 @@ export function PostPage({ post }: PostPageProps) {
   const wordCount = post.readTimeInMinutes * 300;
 
   return (
-    <div className="relative flex flex-col rounded-(--fuwari-radius-large) py-1 md:py-0 md:bg-transparent gap-4 mb-4 w-full">
+    <div className="relative flex flex-col py-1 md:py-0 gap-4 mb-4 w-full">
+      <ReadingProgress />
+
       {/* Table Of Contents (Desktop Floating Right) */}
       <div
-        className="hidden 2xl:block absolute top-0 h-full pl-4"
-        style={{
-          right: "calc(var(--fuwari-toc-width) * -1)",
-          width: "var(--fuwari-toc-width)",
-        }}
+        className="hidden lg:block fixed top-20 right-[max(1rem,calc((100vw-45rem)/2-18rem))]"
+        style={{ width: "min(16rem, calc((100vw - 45rem) / 2 - 2rem))" }}
       >
         <TableOfContents headers={post.toc} />
       </div>

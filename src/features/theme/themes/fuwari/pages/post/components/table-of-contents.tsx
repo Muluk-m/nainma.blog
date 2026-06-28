@@ -49,8 +49,7 @@ export default function TableOfContents({
   useEffect(() => {
     const handleScrollVisibility = () => {
       const scrollY = window.scrollY;
-      // Show when scrolled > 350px (approx banner height)
-      setIsVisible(scrollY > 350);
+      setIsVisible(scrollY > 100);
     };
 
     window.addEventListener("scroll", handleScrollVisibility, {
@@ -269,7 +268,7 @@ export default function TableOfContents({
                     className={cn(
                       "transition w-5 h-5 shrink-0 rounded-lg text-xs flex items-center justify-center font-bold",
                       {
-                        "bg-[oklch(0.89_0.050_var(--fuwari-hue))] dark:bg-(--fuwari-btn-regular-bg) text-(--fuwari-btn-content)":
+                        "bg-black/8 dark:bg-(--fuwari-btn-regular-bg) text-(--fuwari-btn-content)":
                           isH1,
                         "ml-4": isH2,
                         "ml-8": isH3,
@@ -278,7 +277,7 @@ export default function TableOfContents({
                   >
                     {isH1 && h1Count++}
                     {isH2 && (
-                      <div className="transition w-2 h-2 rounded-[0.1875rem] bg-[oklch(0.89_0.050_var(--fuwari-hue))] dark:bg-(--fuwari-btn-regular-bg)"></div>
+                      <div className="transition w-2 h-2 rounded-[0.1875rem] bg-black/8 dark:bg-(--fuwari-btn-regular-bg)"></div>
                     )}
                     {isH3 && (
                       <div className="transition w-1.5 h-1.5 rounded-sm bg-black/5 dark:bg-white/10"></div>
