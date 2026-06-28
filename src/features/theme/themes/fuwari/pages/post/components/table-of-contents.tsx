@@ -220,7 +220,7 @@ export default function TableOfContents({
     >
       <div
         ref={tocRootRef}
-        className="relative toc-root overflow-y-scroll overflow-x-hidden fuwari-toc-scrollbar h-[calc(100vh-20rem)]"
+        className="relative toc-root overflow-y-auto overflow-x-hidden fuwari-toc-scrollbar max-h-[calc(100vh-8rem)]"
         style={{
           scrollBehavior: "smooth",
           maskImage:
