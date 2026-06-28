@@ -33,7 +33,7 @@ export function PostCard({
 
   return (
     <div
-      className={`fuwari-card-base flex flex-col w-full rounded-(--fuwari-radius-large) overflow-hidden relative ${
+      className={`fuwari-card-base flex flex-col md:flex-row w-full rounded-(--fuwari-radius-large) overflow-hidden relative ${
         pinned ? "border-2 border-(--fuwari-primary)/20 shadow-sm" : ""
       }`}
     >
@@ -41,21 +41,21 @@ export function PostCard({
         <div className="absolute top-0 right-0 w-32 h-32 bg-(--fuwari-primary) opacity-5 rounded-bl-[100px] -z-10 pointer-events-none" />
       )}
 
-      <div className="pl-6 md:pl-9 pr-6 pt-6 md:pt-7 pb-6 relative w-full md:pr-24">
-        {post.coverImageKey && (
-          <Link
-            to="/post/$slug"
-            params={{ slug: post.slug }}
-            className="mb-5 block overflow-hidden rounded-(--fuwari-radius-large)"
-          >
-            <img
-              src={getOptimizedImageUrl(post.coverImageKey, 1000)}
-              alt={post.title}
-              loading="lazy"
-              className="aspect-[2/1] w-full object-cover transition-transform duration-500 hover:scale-[1.02]"
-            />
-          </Link>
-        )}
+      {post.coverImageKey && (
+        <Link
+          to="/post/$slug"
+          params={{ slug: post.slug }}
+          className="block overflow-hidden md:w-60 md:shrink-0 md:self-stretch lg:w-64"
+        >
+          <img
+            src={getOptimizedImageUrl(post.coverImageKey, 640)}
+            alt={post.title}
+            loading="lazy"
+            className="aspect-[2/1] w-full object-cover transition-transform duration-500 hover:scale-[1.02] md:aspect-auto md:h-full"
+          />
+        </Link>
+      )}
+      <div className="relative flex-1 min-w-0 pl-6 md:pl-9 pr-6 pt-6 md:pt-7 pb-6 md:pr-24">
         {/* Badge */}
         {(pinned || popular) && (
           <div className="flex items-center gap-1.5 font-medium text-sm mb-3">
