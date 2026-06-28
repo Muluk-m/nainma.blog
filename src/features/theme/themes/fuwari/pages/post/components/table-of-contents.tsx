@@ -220,12 +220,7 @@ export default function TableOfContents({
     >
       <div
         ref={tocRootRef}
-        className="relative toc-root overflow-y-auto overflow-x-hidden fuwari-toc-scrollbar max-h-[calc(100vh-8rem)]"
-        style={{
-          scrollBehavior: "smooth",
-          maskImage:
-            "linear-gradient(to bottom, transparent 0%, black 2rem, black calc(100% - 2rem), transparent 100%)",
-        }}
+        className="relative toc-root overflow-hidden max-h-[calc(100vh-8rem)]"
       >
         <div className="h-8 w-full" />
         <div
