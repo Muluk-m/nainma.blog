@@ -22,3 +22,6 @@ docs/superpowers/
 *.tsbuildinfo
 .gstack/
 .fallow
+
+# naituan-illustrations 上游小黑示例图（13MB，风格校准用，不影响主流程）
+.claude/skills/naituan-illustrations/assets/examples/
