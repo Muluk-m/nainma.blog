@@ -7,10 +7,6 @@
   "observability": {
     "enabled": true
   },
-  // 代码高亮（shiki JS 引擎）在长文多语言时单步 CPU 会超默认 30s，放宽到 5min
-  "limits": {
-    "cpu_ms": 300000
-  },
   "keep_vars": true,
   "routes": [
     {
