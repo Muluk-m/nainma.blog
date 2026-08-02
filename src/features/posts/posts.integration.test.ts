@@ -171,6 +171,26 @@ describe("Posts Integration", () => {
       const deletedPost = await PostService.findPostById(adminContext, { id });
       expect(deletedPost).toBeNull();
     });
+
+    it("should keep a published post when its cache generation cannot be read", async () => {
+      const id = await createPublishedPost(
+        "Delete After Cache Read",
+        "delete-after-cache-read",
+      );
+      vi.spyOn(adminContext.env.KV, "get").mockRejectedValueOnce(
+        new Error("KV unavailable"),
+      );
+
+      await expect(
+        PostService.deletePost(adminContext, { id }),
+      ).rejects.toThrow("KV unavailable");
+
+      const retainedPost = await PostService.findPostById(adminContext, { id });
+      expect(retainedPost?.id).toBe(id);
+
+      unwrap(await PostService.deletePost(adminContext, { id }));
+      expect(await PostService.findPostById(adminContext, { id })).toBeNull();
+    });
   });
 
   describe("Slug Generation", () => {

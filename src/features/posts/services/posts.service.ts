@@ -367,18 +367,20 @@ export async function deletePost(
     return err({ reason: "POST_NOT_FOUND" });
   }
 
+  const publishedDetailCacheKey =
+    post.status === "published"
+      ? POSTS_CACHE_KEYS.detail(
+          await CacheService.getVersion(context, "posts:detail"),
+          post.slug,
+        )
+      : null;
+
   await PostRepo.deletePost(context.db, data.id);
 
   // Only clear cache/index for published posts
-  if (post.status === "published") {
+  if (publishedDetailCacheKey) {
     const tasks = [];
-    const version = await CacheService.getVersion(context, "posts:detail");
-    tasks.push(
-      CacheService.deleteKey(
-        context,
-        POSTS_CACHE_KEYS.detail(version, post.slug),
-      ),
-    );
+    tasks.push(CacheService.deleteKey(context, publishedDetailCacheKey));
     tasks.push(CacheService.bumpVersion(context, "posts:list"));
     tasks.push(SearchService.deleteIndex(context, { id: data.id }));
     tasks.push(purgePostCDNCache(context.env, post.slug));
