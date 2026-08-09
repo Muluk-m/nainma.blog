@@ -84,7 +84,7 @@
     "fflate": "^0.8.2",
     "gray-matter": "^4.0.3",
     "hono": "^4.10.8",
-    "katex": "^0.16.33",
+    "katex": "^0.17.0",
     "linkedom": "^0.18.12",
     "lucide-react": "^1.16.0",
     "marked": "^17.0.3",
